@@ -5,9 +5,8 @@
 %     \PassOptionsToPackage{numbers, compress}{natbib}
 % before loading neurips_2023
 
-
-% ready for submission
-\usepackage{neurips_2023}
+\PassOptionsToPackage{numbers, compress}{natbib}
+\usepackage[preprint]{neurips_2023} % ready for submission
 
 
 % to compile a preprint version, e.g., for submission to arXiv, add add the
@@ -22,17 +21,9 @@
 % to avoid loading the natbib package, add option nonatbib:
 %    \usepackage[nonatbib]{neurips_2023}
 
-
-\usepackage[utf8]{inputenc} % allow utf-8 input
-\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
-\usepackage{hyperref}       % hyperlinks
-\usepackage{url}            % simple URL typesetting
-\usepackage{booktabs}       % professional-quality tables
-\usepackage{amsfonts}       % blackboard math symbols
-\usepackage{nicefrac}       % compact symbols for 1/2, etc.
-\usepackage{microtype}      % microtypography
-\usepackage{xcolor}         % colors
-
+\input{preamble}
+\input{includes/math}
+\input{includes/acronyms}
 
 \title{Formatting Instructions For NeurIPS 2023}
 
@@ -162,11 +153,11 @@ the paper with your own.
 
 
 The formatting instructions contained in these style files are summarized in
-Sections \ref{gen_inst}, \ref{headings}, and \ref{others} below.
+\cref{sec:gen_inst,sec:headings,sec:others} below.
 
 
 \section{General formatting instructions}
-\label{gen_inst}
+\label{sec:gen_inst}
 
 
 The text must be confined within a rectangle 5.5~inches (33~picas) wide and
@@ -191,12 +182,12 @@ follow. If there is only one co-author, list both author and co-author side by
 side.
 
 
-Please pay special attention to the instructions in Section \ref{others}
+Please pay special attention to the instructions in Section \cref{sec:others}
 regarding figures, tables, acknowledgments, and references.
 
 
 \section{Headings: first level}
-\label{headings}
+\label{sec:headings}
 
 
 All headings should be lower case (except for first word and proper nouns),
@@ -227,7 +218,7 @@ of space.
 
 
 \section{Citations, figures, tables, references}
-\label{others}
+\label{sec:others}
 
 
 These instructions apply to everyone.
@@ -277,6 +268,8 @@ previous work [4].'' If you cite your other papers that are not widely available
 (e.g., a journal paper under review), use anonymous author names in the
 citation, e.g., an author of the form ``A.\ Anonymous'' and include a copy of the anonymized paper in the supplementary material.
 
+Here is a citation \cite{vaswani2017attention}. 
+The author, \citet{vaswani2017attention}, can be mentioned explicitly.
 
 \subsection{Footnotes}
 
@@ -296,8 +289,20 @@ marks.\footnote{As in this example.}
 
 \begin{figure}
   \centering
-  \fbox{\rule[-.5cm]{0cm}{4cm} \rule[-.5cm]{4cm}{0cm}}
+  \begin{subfigure}[t]{0.48\columnwidth}
+    \centering
+    \fbox{\rule[-.5cm]{0cm}{4cm} \rule[-.5cm]{4cm}{0cm}}
+    \caption{Left}
+    \label{fig:main-left}
+  \end{subfigure}%
+  \hfill
+  \begin{subfigure}[t]{0.48\columnwidth}
+    \centering
+    \fbox{\rule[-.5cm]{0cm}{4cm} \rule[-.5cm]{4cm}{0cm}}
+    \caption{Right}
+  \end{subfigure}
   \caption{Sample figure caption.}
+  \label{fig:main}
 \end{figure}
 
 
@@ -312,12 +317,13 @@ You may use color figures.  However, it is best for the figure captions and the
 paper body to be legible if the paper is printed in either black/white or in
 color.
 
+See \cref{fig:main} and, in particular, \cref{fig:main-left}.
 
 \subsection{Tables}
 
 
 All tables must be centered, neat, clean and legible.  The table number and
-title always appear before the table.  See Table~\ref{sample-table}.
+title always appear before the table.  See \cref{tab:sample-table}.
 
 
 Place one line space before the table title, one line space after the
@@ -332,12 +338,12 @@ typesetting high-quality, professional tables:
 \begin{center}
   \url{https://www.ctan.org/pkg/booktabs}
 \end{center}
-This package was used to typeset Table~\ref{sample-table}.
+This package was used to typeset \cref{tab:sample-table}.
 
 
 \begin{table}
   \caption{Sample table title}
-  \label{sample-table}
+  \label{tab:sample-table}
   \centering
   \begin{tabular}{lll}
     \toprule
@@ -354,6 +360,25 @@ This package was used to typeset Table~\ref{sample-table}.
 
 \subsection{Math}
 Note that display math in bare TeX commands will not create correct line numbers for submission. Please use LaTeX (or AMSTeX) commands for unnumbered display math. (You really shouldn't be using \$\$ anyway; see \url{https://tex.stackexchange.com/questions/503/why-is-preferable-to} and \url{https://tex.stackexchange.com/questions/40492/what-are-the-differences-between-align-equation-and-displaymath} for more information.)
+
+Here is the Gaussian kernel:
+\begin{equation} \label{eq:gaussian-kernel}
+  k(\mbx, \mbx') \defeq \sigma^2 \exp{\left(-\frac{1}{2} (\mbx - \mbx')^\top \mbLambda^{-1} (\mbx - \mbx') \right)}
+\end{equation}
+In \cref{eq:gaussian-kernel}, we can see that $\dotsc$
+
+Note that we can cancel terms in equations:
+\begin{equation}
+  \frac{2}{\sqrt{2}} 
+  = \frac{2}{2^{\nicefrac{1}{2}}}
+  = \frac{2^{\nicefrac{1}{2}} \cdot \bcancel{2^{\nicefrac{1}{2}}}}{\bcancel{2^{\nicefrac{1}{2}}}}
+  = \sqrt{2}
+\end{equation}
+
+\section{Miscellaneous}
+
+Here is the first use of the term \gls{MSE}.
+All subsequent uses will appear as \gls{MSE}.
 
 \subsection{Final instructions}
 
@@ -452,36 +477,8 @@ Do {\bf not} include this section in the anonymized submission, only in the fina
 Authors may wish to optionally include extra information (complete proofs, additional experiments and plots) in the appendix. All such materials should be part of the supplemental material (submitted separately) and should NOT be included in the main submission.
 
 
-\section*{References}
-
-
-References follow the acknowledgments in the camera-ready paper. Use unnumbered first-level heading for
-the references. Any choice of citation style is acceptable as long as you are
-consistent. It is permissible to reduce the font size to \verb+small+ (9 point)
-when listing the references.
-Note that the Reference section does not count towards the page limit.
-\medskip
-
-
-{
-\small
-
-
-[1] Alexander, J.A.\ \& Mozer, M.C.\ (1995) Template-based algorithms for
-connectionist rule extraction. In G.\ Tesauro, D.S.\ Touretzky and T.K.\ Leen
-(eds.), {\it Advances in Neural Information Processing Systems 7},
-pp.\ 609--616. Cambridge, MA: MIT Press.
-
-
-[2] Bower, J.M.\ \& Beeman, D.\ (1995) {\it The Book of GENESIS: Exploring
-  Realistic Neural Models with the GEneral NEural SImulation System.}  New York:
-TELOS/Springer--Verlag.
-
-
-[3] Hasselmo, M.E., Schnell, E.\ \& Barkai, E.\ (1995) Dynamics of learning and
-recall at excitatory recurrent synapses and cholinergic modulation in rat
-hippocampal region CA3. {\it Journal of Neuroscience} {\bf 15}(7):5249-5262.
-}
+\bibliographystyle{abbrvnat}
+{\small \bibliography{main}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
